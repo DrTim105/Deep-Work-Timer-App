@@ -3,9 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/SALIHU TIMOTHY/AndroidStudioProjects/DeepWorkTimer/app/src/main/res/drawable/task_bg.xml" value="0.2203125" />
         <entry key="..\:/Users/SALIHU TIMOTHY/AndroidStudioProjects/DeepWorkTimer/app/src/main/res/layout/activity_main.xml" value="0.18055555555555555" />
         <entry key="..\:/Users/SALIHU TIMOTHY/AndroidStudioProjects/DeepWorkTimer/app/src/main/res/layout/content_main.xml" value="0.25" />
-        <entry key="..\:/Users/SALIHU TIMOTHY/AndroidStudioProjects/DeepWorkTimer/app/src/main/res/layout/task_list_items.xml" value="0.18055555555555555" />
+        <entry key="..\:/Users/SALIHU TIMOTHY/AndroidStudioProjects/DeepWorkTimer/app/src/main/res/layout/fragment_task.xml" value="0.33" />
+        <entry key="..\:/Users/SALIHU TIMOTHY/AndroidStudioProjects/DeepWorkTimer/app/src/main/res/layout/task_list_items.xml" value="0.33" />
       </map>
     </option>
   </component>

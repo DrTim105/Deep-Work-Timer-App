@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/app_background"
     tools:context="com.salihutimothy.deepworktimer.MainActivity"
     tools:showIn="@layout/activity_main">
 
@@ -16,7 +17,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         android:text="No Task Selected"
-        android:textColor="?android:attr/textColorTertiary"
+        android:textColor="@color/text_color"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
