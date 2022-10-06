@@ -6,55 +6,71 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.salihutimothy.deepworktimer.R
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import android.content.Context
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import android.util.Log
+import com.salihutimothy.deepworktimer.adapter.CursorRvAdapter
+import com.salihutimothy.deepworktimer.entities.Task
+import com.salihutimothy.deepworktimer.models.DeepWorkViewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private const val TAG = "TaskFragment"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [TaskFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class TaskFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class TaskFragment : Fragment(), CursorRvAdapter.OnTaskClickListener {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private val viewModel by lazy { ViewModelProviders.of(requireActivity()).get(DeepWorkViewModel::class.java)}
+    private val mAdapter = CursorRvAdapter(null, this)
+    private lateinit var taskList : RecyclerView
+
+    interface OnEditTask{
+        fun onEditTask (task: Task)
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        Log.d(TAG, "onCreateView: called")
+        return inflater.inflate(R.layout.fragment_task, container, false)
+    }
+    override fun onAttach(context: Context) {
+        Log.d(TAG, "onAttach: called")
+        super.onAttach(context)
+
+        if (context !is OnEditTask) {
+            throw RuntimeException("${context.toString()} must implement OnEditTask")
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_task, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d(TAG, "onCreate: called")
+        super.onCreate(savedInstanceState)
+        viewModel.cursor.observe(this, Observer { cursor -> mAdapter.swapCursor(cursor)?.close() })
+
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment TaskFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            TaskFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.d(TAG, "onViewCreated: called")
+        super.onViewCreated(view, savedInstanceState)
+
+        taskList = view.findViewById(R.id.task_list)
+        taskList.layoutManager =
+            LinearLayoutManager(context)
+        taskList.adapter = mAdapter
+    }
+
+
+
+    override fun onEditClick(task: Task) {
+        (activity as OnEditTask?)?.onEditTask(task)
+    }
+
+    override fun onDeleteClick(task: Task) {
+        viewModel.deleteTask(task.id)
+    }
+
+    override fun onTaskLongClick(task: Task) {
+        Log.d(TAG, "onViewCreated: called")
+
     }
 }

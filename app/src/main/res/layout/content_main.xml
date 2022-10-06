@@ -9,7 +9,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:baselineAligned="false">
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/mainFragment"
         android:name="com.salihutimothy.deepworktimer.fragments.TaskFragment"
         android:layout_width="match_parent"
@@ -21,6 +21,7 @@
         android:id="@+id/task_details_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/app_background"
         android:layout_weight="1">
 
     </FrameLayout>

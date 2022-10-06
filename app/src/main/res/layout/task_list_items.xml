@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="8dp"
+    android:layout_marginBottom="8dp"
     android:background="@drawable/task_bg">
 
 <!--    <com.google.android.material.card.MaterialCardView-->
@@ -18,16 +18,16 @@
             android:id="@+id/tli_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="8dp"
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/tli_edit"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="TaskTimer Application"/>
+            tools:text="TaskTimer Application" />
 
         <TextView
             android:id="@+id/tli_description"
@@ -58,14 +58,14 @@
             android:id="@+id/tli_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp"
-            android:padding="10dp"
             android:background="@drawable/button_bg"
             android:contentDescription="@string/delete_button_description"
+            android:padding="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_delete"/>
+            app:srcCompat="@drawable/ic_delete" />
 
 <!--    </com.google.android.material.card.MaterialCardView>-->
 

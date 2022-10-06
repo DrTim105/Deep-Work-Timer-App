@@ -1,14 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.AddEditFragment">
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:background="@color/app_background">
 
-<!--    &lt;!&ndash; TODO: Update blank fragment layout &ndash;&gt;-->
-<!--    <TextView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:text="@string/hello_blank_fragment" />-->
+    <EditText
+        android:id="@+id/addedit_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_marginVertical="8dp"
+        android:background="@drawable/edittext_bg"
+        android:padding="10dp"
+        android:hint="@string/addedit_name_hint"
+        android:inputType="textNoSuggestions"
+        android:maxLength="64"/>
 
-</FrameLayout>
+    <EditText
+        android:id="@+id/addedit_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_marginVertical="8dp"
+        android:background="@drawable/edittext_bg"
+        android:padding="10dp"
+        android:hint="@string/addedit_description_hint"
+        android:inputType="textMultiLine"
+        android:maxLength="256"/>
+
+    <EditText
+        android:id="@+id/addedit_sortorder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_marginVertical="8dp"
+        android:background="@drawable/edittext_bg"
+        android:padding="10dp"        android:hint="@string/addedit_sort_hint"
+        android:inputType="number"
+        android:maxLength="9"/>
+
+    <Button
+        android:id="@+id/addedit_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:drawableStart="@android:drawable/ic_menu_save"
+        android:text="@string/addedit_save_text"/>
+</LinearLayout>
