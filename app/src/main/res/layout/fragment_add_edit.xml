@@ -11,25 +11,29 @@
         android:id="@+id/addedit_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
         android:layout_marginVertical="8dp"
         android:background="@drawable/edittext_bg"
-        android:padding="10dp"
+        android:ems="10"
+        android:fontFamily="@font/roboto_slab"
         android:hint="@string/addedit_name_hint"
         android:inputType="textNoSuggestions"
-        android:maxLength="64"/>
+        android:maxLength="64"
+        android:padding="10dp" />
 
     <EditText
         android:id="@+id/addedit_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
         android:layout_marginVertical="8dp"
         android:background="@drawable/edittext_bg"
-        android:padding="10dp"
+        android:ems="10"
+        android:gravity="top"
+        android:textSize="16sp"
         android:hint="@string/addedit_description_hint"
         android:inputType="textMultiLine"
-        android:maxLength="256"/>
+        android:maxLength="256"
+        android:padding="10dp"
+        android:minLines="4"/>
 
     <EditText
         android:id="@+id/addedit_sortorder"

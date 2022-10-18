@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.lifecycle.ViewModelProviders
+import com.salihutimothy.deepworktimer.AppDialog
 import com.salihutimothy.deepworktimer.R
 import com.salihutimothy.deepworktimer.entities.Task
 import com.salihutimothy.deepworktimer.models.DeepWorkViewModel
@@ -91,6 +92,15 @@ class AddEditFragment : Fragment() {
         newTask.id = task?.id ?: 0
 
         return newTask
+    }
+
+    fun isDirty(): Boolean {
+        val newTask = taskFromUi()
+        return ((newTask != task) &&
+                (newTask.name.isNotBlank()
+                        || newTask.description.isNotBlank()
+                        || newTask.sortOrder != 0)
+                )
     }
 
     private fun saveTask() {
@@ -208,4 +218,5 @@ class AddEditFragment : Fragment() {
         Log.d(TAG, "onDestroy: called")
         super.onDestroy()
     }
+
 }
