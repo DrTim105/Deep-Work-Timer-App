@@ -24,4 +24,16 @@
     <string name="cancelEditDiag_message">You have unsaved changes. Do you want to abandon your changes, or continue editing?</string>
     <string name="cancelEditDiag_positive_caption">Abandon changes</string>
     <string name="cancelEditDiag_negative_caption">Continue editing</string>
+
+    <string name="about_copyright">Copyright \u00a9 2019 learnprogramming.academy</string>
+
+    <string name="about_weblink">Instructions available at www.learnprogramming.academy</string>
+
+    <string name="about_email">For support, email jlmapps.developer@gmail.com</string>
+
+    <string name="about_credits">
+    Code base derived from
+    <b>2019 learnprogramming.academy</b>
+    </string>
+
 </resources>

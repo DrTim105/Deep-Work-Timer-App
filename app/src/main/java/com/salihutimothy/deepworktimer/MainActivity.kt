@@ -7,6 +7,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -24,7 +26,8 @@ class MainActivity : AppCompatActivity(), AddEditFragment.OnSaveClicked, TaskFra
     // Whether or the activity is in 2-pane mode
     // i.e. running in landscape, or on a tablet.
     private var mTwoPane = false
-
+    // module scope because we need to dismiss it in onStop (e.g. when orientation changes) to avoid memory leaks.
+    private var aboutDialog: AlertDialog? = null
     private lateinit var toolbar: Toolbar
     private lateinit var taskContainer: FrameLayout
     private lateinit var mainFragment: FragmentContainerView
@@ -93,6 +96,7 @@ class MainActivity : AppCompatActivity(), AddEditFragment.OnSaveClicked, TaskFra
         when (item.itemId) {
             R.id.menumain_addTask -> taskEditRequest(null)
 //            R.id.menumain_settings -> true
+            R.id.menumain_showAbout -> showAboutDialog()
             android.R.id.home -> {
                 Log.d(TAG, "onOptionsItemSelected: home button pressed")
                 val fragment = findFragmentById(R.id.task_details_container)
@@ -112,6 +116,21 @@ class MainActivity : AppCompatActivity(), AddEditFragment.OnSaveClicked, TaskFra
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun showAboutDialog() {
+        val messageView = layoutInflater.inflate(R.layout.about, null, false)
+        val builder = AlertDialog.Builder(this)
+
+        builder.setTitle(R.string.app_name)
+        builder.setIcon(R.drawable.ic_app)
+
+        aboutDialog = builder.setView(messageView).create()
+        aboutDialog?.setCanceledOnTouchOutside(true)
+
+        val aboutVersion = messageView.findViewById(R.id.about_version) as TextView
+        aboutVersion.text = BuildConfig.VERSION_NAME
+        aboutDialog?.show()
     }
 
     private fun taskEditRequest(task: Task?) {
@@ -156,6 +175,14 @@ class MainActivity : AppCompatActivity(), AddEditFragment.OnSaveClicked, TaskFra
         Log.d(TAG, "onPositiveDialogResult: called with dialogId $dialogId")
         if (dialogId == DIALOG_ID_CANCEL_EDIT) {
             removeEditPane(findFragmentById(R.id.task_details_container))
+        }
+    }
+
+    override fun onStop() {
+        Log.d(TAG, "onStop: called")
+        super.onStop()
+        if (aboutDialog?.isShowing == true) {
+            aboutDialog?.dismiss()
         }
     }
 }
