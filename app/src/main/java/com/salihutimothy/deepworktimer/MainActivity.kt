@@ -125,6 +125,12 @@ class MainActivity : AppCompatActivity(), AddEditFragment.OnSaveClicked, TaskFra
         builder.setTitle(R.string.app_name)
         builder.setIcon(R.drawable.ic_app)
 
+        builder.setPositiveButton(R.string.ok) {_,_ ->
+            if (aboutDialog != null && aboutDialog?.isShowing == true) {
+                aboutDialog?.dismiss()
+            }
+        }
+
         aboutDialog = builder.setView(messageView).create()
         aboutDialog?.setCanceledOnTouchOutside(true)
 
