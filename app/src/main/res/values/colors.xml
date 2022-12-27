@@ -11,5 +11,6 @@
     <color name="app_background">#F7F0EF</color>
     <color name="text_color">#F19A6D</color>
     <color name="button_color">#F19A6D</color>
-    <color name="button_bg_color">#F8EFEA</color>
+    <color name="task_color">#f2a47c</color>
+    <color name="button_bg_color">#fef5f0</color>
 </resources>
