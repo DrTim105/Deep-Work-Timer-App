@@ -2,8 +2,10 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    style="@style/SettingsDialogStyle"
     android:padding="?attr/dialogPreferredPadding">
 
     <Button
@@ -13,6 +15,8 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:text="@string/cancel"
+        android:textColor="@color/button_color"
+        app:rippleColor="?attr/colorControlHighlight"
         app:layout_constraintBottom_toBottomOf="@+id/okButton"
         app:layout_constraintEnd_toStartOf="@+id/okButton" />
 
@@ -24,6 +28,8 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
         android:text="@string/ok"
+        android:textColor="@color/button_color"
+        app:rippleColor="?attr/colorControlHighlight"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ignoreSeconds" />
 
@@ -35,6 +41,8 @@
         android:layout_marginTop="16dp"
         android:max="24"
         android:progress="3"
+        android:progressTint="@color/button_color"
+        android:thumbTint="@color/button_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ignoreSecondsTitle" />
@@ -62,8 +70,19 @@
         android:id="@+id/firstDayPrompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:text="@string/settingsFirstDayPrompt"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+<!--    <TextView-->
+<!--        android:id="@+id/settingsTitle"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="@string/action_settings"-->
+<!--        android:textSize="20sp"-->
+<!--        android:textColor="@color/black"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

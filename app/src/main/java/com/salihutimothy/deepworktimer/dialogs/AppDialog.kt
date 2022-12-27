@@ -1,4 +1,4 @@
-package com.salihutimothy.deepworktimer
+package com.salihutimothy.deepworktimer.dialogs
 
 
 import android.app.AlertDialog
@@ -8,6 +8,7 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatDialogFragment
+import com.salihutimothy.deepworktimer.R
 
 
 private const val TAG = "AppDialog"
