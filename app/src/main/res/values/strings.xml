@@ -6,7 +6,7 @@
     <string name="menutitle_settings">Settings</string>
     <string name="menutitle_showAbout">About TaskTimer</string>
     <string name="menutitle_generate">Generate data</string>
-    <string name="no_task_message">No Task Selected</string>
+    <string name="no_task_message">No task being timed</string>
     <string name="edit_button_description">Button to edit a tasks details</string>
     <string name="delete_button_description">Button to delete a task</string>
     <string name="addedit_name_hint">Task name: required</string>
@@ -35,5 +35,7 @@
     Code base derived from
     <b>2019 learnprogramming.academy</b>
     </string>
+
+    <string name="timing_message">Currently timing %1$s</string>
 
 </resources>

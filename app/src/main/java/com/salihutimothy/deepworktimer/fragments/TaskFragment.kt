@@ -11,8 +11,13 @@ import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
+import android.widget.TextView
 import com.salihutimothy.deepworktimer.*
 import com.salihutimothy.deepworktimer.adapter.CursorRvAdapter
+import com.salihutimothy.deepworktimer.dialogs.AppDialog
+import com.salihutimothy.deepworktimer.dialogs.DIALOG_ID
+import com.salihutimothy.deepworktimer.dialogs.DIALOG_MESSAGE
+import com.salihutimothy.deepworktimer.dialogs.DIALOG_POSITIVE_RID
 import com.salihutimothy.deepworktimer.entities.Task
 import com.salihutimothy.deepworktimer.models.DeepWorkViewModel
 
@@ -26,6 +31,7 @@ class TaskFragment : Fragment(), CursorRvAdapter.OnTaskClickListener, AppDialog.
     private val viewModel by lazy { ViewModelProviders.of(requireActivity()).get(DeepWorkViewModel::class.java)}
     private val mAdapter = CursorRvAdapter(null, this)
     private lateinit var taskList : RecyclerView
+    lateinit var currentTask : TextView
 
     interface OnEditTask{
         fun onEditTask (task: Task)
@@ -34,7 +40,11 @@ class TaskFragment : Fragment(), CursorRvAdapter.OnTaskClickListener, AppDialog.
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         Log.d(TAG, "onCreateView: called")
-        return inflater.inflate(R.layout.fragment_task, container, false)
+
+        val view = inflater.inflate(R.layout.fragment_task, container, false)
+        currentTask = view.findViewById(R.id.current_task)
+
+        return view
     }
     override fun onAttach(context: Context) {
         Log.d(TAG, "onAttach: called")
@@ -57,6 +67,8 @@ class TaskFragment : Fragment(), CursorRvAdapter.OnTaskClickListener, AppDialog.
         super.onViewCreated(view, savedInstanceState)
 
         taskList = view.findViewById(R.id.task_list)
+//        currentTask = view.findViewById(R.id.current_task)
+
         taskList.layoutManager =
             LinearLayoutManager(context)
         taskList.adapter = mAdapter
@@ -65,6 +77,8 @@ class TaskFragment : Fragment(), CursorRvAdapter.OnTaskClickListener, AppDialog.
 
 
     override fun onEditClick(task: Task) {
+        Log.d(TAG, "onEditClick: called")
+
         (activity as OnEditTask?)?.onEditTask(task)
     }
 
@@ -81,7 +95,8 @@ class TaskFragment : Fragment(), CursorRvAdapter.OnTaskClickListener, AppDialog.
     }
 
     override fun onTaskLongClick(task: Task) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Log.d(TAG, "onTaskLongClick: called")
+        viewModel.timeTask(task)
     }
 
     override fun onPositiveDialogResult(dialogId: Int, args: Bundle) {
@@ -92,5 +107,20 @@ class TaskFragment : Fragment(), CursorRvAdapter.OnTaskClickListener, AppDialog.
             if (BuildConfig.DEBUG && taskId == 0L) throw AssertionError("Task ID is zero")
             viewModel.deleteTask(taskId)
         }
+    }
+
+    companion object {
+        /**
+         * Use this factory method to create a new instance of
+         * this fragment using the provided parameters.
+         *
+         * @param task The task to be edited, or null to add a new task.
+         * @return A new instance of fragment AddEditFragment.
+         */
+        @JvmStatic
+        fun newInstance() =
+            TaskFragment.apply {
+
+            }
     }
 }

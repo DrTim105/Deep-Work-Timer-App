@@ -36,6 +36,7 @@ class TaskViewHolder(private val containerView: View) :
         }
 
         containerView.setOnLongClickListener {
+            listener.onTaskLongClick(task)
             true
         }
     }

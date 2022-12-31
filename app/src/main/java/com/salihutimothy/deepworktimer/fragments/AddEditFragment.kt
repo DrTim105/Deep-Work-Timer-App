@@ -14,7 +14,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.lifecycle.ViewModelProviders
-import com.salihutimothy.deepworktimer.AppDialog
+import com.salihutimothy.deepworktimer.dialogs.AppDialog
 import com.salihutimothy.deepworktimer.R
 import com.salihutimothy.deepworktimer.entities.Task
 import com.salihutimothy.deepworktimer.models.DeepWorkViewModel

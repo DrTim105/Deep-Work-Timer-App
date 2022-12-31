@@ -13,24 +13,36 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.salihutimothy.deepworktimer.dialogs.AppDialog
+import com.salihutimothy.deepworktimer.dialogs.SettingsDialog
 import com.salihutimothy.deepworktimer.entities.Task
 import com.salihutimothy.deepworktimer.fragments.AddEditFragment
 import com.salihutimothy.deepworktimer.fragments.TaskFragment
+import com.salihutimothy.deepworktimer.models.DeepWorkViewModel
 
 
 private const val TAG = "MainActivity"
 private const val DIALOG_ID_CANCEL_EDIT = 1
 
-class MainActivity : AppCompatActivity(), AddEditFragment.OnSaveClicked, TaskFragment.OnEditTask, AppDialog.DialogEvents {
+class MainActivity : AppCompatActivity(), AddEditFragment.OnSaveClicked, TaskFragment.OnEditTask,
+    AppDialog.DialogEvents {
 
     // Whether or the activity is in 2-pane mode
     // i.e. running in landscape, or on a tablet.
     private var mTwoPane = false
+
     // module scope because we need to dismiss it in onStop (e.g. when orientation changes) to avoid memory leaks.
     private var aboutDialog: AlertDialog? = null
+
+    private val viewModel by lazy { ViewModelProvider(this).get(DeepWorkViewModel::class.java) }
+
+
     private lateinit var toolbar: Toolbar
     private lateinit var taskContainer: FrameLayout
     private lateinit var mainFragment: FragmentContainerView
+    private lateinit var taskFragment: TaskFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate: starts")
@@ -41,7 +53,6 @@ class MainActivity : AppCompatActivity(), AddEditFragment.OnSaveClicked, TaskFra
 
         taskContainer = findViewById(R.id.task_details_container)
         mainFragment = findViewById<FragmentContainerView>(R.id.mainFragment)
-
 
         mTwoPane = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
         Log.d(TAG, "onCreate: twoPane is $mTwoPane")
@@ -54,6 +65,25 @@ class MainActivity : AppCompatActivity(), AddEditFragment.OnSaveClicked, TaskFra
             taskContainer.visibility = if (mTwoPane) View.INVISIBLE else View.GONE
             mainFragment.visibility = View.VISIBLE
         }
+
+//        val currentTask = findViewById<TextView>(R.id.current_task)
+
+//        taskFragment = TaskFragment.newInstance()
+
+        val mFragment = findFragmentById(R.id.mainFragment)
+        viewModel.timing.observe(this, Observer<String> { timing ->
+            Log.d(TAG, "onCreate: viewModel is observing ${mFragment.toString()}")
+            if (mFragment is TaskFragment) {
+                val taskFragment = mFragment as TaskFragment
+                taskFragment.currentTask.text = if (timing != null) {
+                    getString(R.string.timing_message, timing)
+                } else {
+                    getString(R.string.no_task_message)
+                }
+            }
+
+        })
+
         Log.d(TAG, "onCreate: finished")
     }
 
@@ -128,7 +158,7 @@ class MainActivity : AppCompatActivity(), AddEditFragment.OnSaveClicked, TaskFra
         builder.setTitle(R.string.app_name)
         builder.setIcon(R.drawable.ic_app)
 
-        builder.setPositiveButton(R.string.ok) {_,_ ->
+        builder.setPositiveButton(R.string.ok) { _, _ ->
             if (aboutDialog != null && aboutDialog?.isShowing == true) {
                 aboutDialog?.dismiss()
             }

@@ -12,9 +12,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.salihutimothy.deepworktimer.entities.Task
 import com.salihutimothy.deepworktimer.entities.TasksContract
-import kotlinx.coroutines.*
+import com.salihutimothy.deepworktimer.entities.Timing
+import com.salihutimothy.deepworktimer.entities.TimingsContract
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-private const val TAG = "TaskTimerViewModel"
+private const val TAG = "DeepWorkViewModel"
 
 class DeepWorkViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -25,9 +30,15 @@ class DeepWorkViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
+    private var currentTiming: Timing? = null
+
     private val databaseCursor = MutableLiveData<Cursor>()
     val cursor: LiveData<Cursor>
         get() = databaseCursor
+
+    private val taskTiming = MutableLiveData<String>()
+    val timing: LiveData<String>
+        get() = taskTiming
 
     init {
         Log.d(TAG, "TaskTimerViewModel: created")
@@ -55,9 +66,8 @@ class DeepWorkViewModel(application: Application) : AndroidViewModel(application
                 projection, null, null,
                 sortOrder
             )
-            databaseCursor.postValue(cursor)
+            databaseCursor.postValue(cursor!!)
         }
-
     }
 
     fun saveTask(task: Task): Task {
@@ -106,6 +116,67 @@ class DeepWorkViewModel(application: Application) : AndroidViewModel(application
                     taskId
                 ), null, null
             )
+        }
+    }
+
+    fun timeTask(task: Task) {
+        Log.d(TAG, "timeTask: called")
+        // Use local variable, to allow smart casts
+        val timingRecord = currentTiming
+
+        if (timingRecord == null) {
+            // no task being timed, start timing the new task
+            currentTiming = Timing(task.id)
+            saveTiming(currentTiming!!)
+        } else {
+            // We have a task being timed, so save it
+            timingRecord.setDuration()
+            saveTiming(timingRecord)
+
+            if (task.id == timingRecord.taskId) {
+                // the current task was tapped a second time, stop timing
+                currentTiming = null
+            } else {
+                // a new task is being timed
+                currentTiming = Timing(task.id)
+                saveTiming(currentTiming!!)
+            }
+        }
+
+        // Update the LiveData
+        taskTiming.value = if (currentTiming != null) task.name else null
+    }
+
+    private fun saveTiming(currentTiming: Timing) {
+        Log.d(TAG, "saveTiming: called")
+
+        // Are we updating, or inserting a new row?
+        val inserting = (currentTiming.duration == 0L)
+
+        val values = ContentValues().apply {
+            if (inserting) {
+                put(TimingsContract.Columns.TIMING_TASK_ID, currentTiming.taskId)
+                put(TimingsContract.Columns.TIMING_START_TIME, currentTiming.startTime)
+            }
+            put(TimingsContract.Columns.TIMING_DURATION, currentTiming.duration)
+        }
+
+        GlobalScope.launch {
+            if (inserting) {
+                val uri = getApplication<Application>().contentResolver.insert(
+                    TimingsContract.CONTENT_URI,
+                    values
+                )
+                if (uri != null) {
+                    currentTiming.id = TimingsContract.getId(uri)
+                }
+            } else {
+                getApplication<Application>().contentResolver.update(
+                    TimingsContract.buildUriFromId(
+                        currentTiming.id
+                    ), values, null, null
+                )
+            }
         }
     }
 

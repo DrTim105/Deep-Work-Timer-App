@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import com.salihutimothy.deepworktimer.dialogs.*
 
 
 fun FragmentActivity.findFragmentById(id: Int): Fragment? {
@@ -26,7 +27,7 @@ fun FragmentActivity.showConfirmationDialog(
     }
 
     Log.d("BUG", "About to call appdialog class")
-    val dialog = AppDialog()
+    val dialog =  AppDialog()
     dialog.arguments = args
     dialog.show(supportFragmentManager, null)
 }
