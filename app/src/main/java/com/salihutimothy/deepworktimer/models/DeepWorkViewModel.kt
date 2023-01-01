@@ -10,10 +10,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.salihutimothy.deepworktimer.entities.Task
-import com.salihutimothy.deepworktimer.entities.TasksContract
-import com.salihutimothy.deepworktimer.entities.Timing
-import com.salihutimothy.deepworktimer.entities.TimingsContract
+import com.salihutimothy.deepworktimer.entities.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -46,6 +43,8 @@ class DeepWorkViewModel(application: Application) : AndroidViewModel(application
             TasksContract.CONTENT_URI,
             true, contentObserver
         )
+
+        currentTiming = retrieveTiming()
         loadTasks()
     }
 
@@ -178,6 +177,39 @@ class DeepWorkViewModel(application: Application) : AndroidViewModel(application
                 )
             }
         }
+    }
+
+    private fun retrieveTiming(): Timing? {
+        Log.d(TAG, "retrieveTiming starts")
+        val timing: Timing?
+
+        val timingCursor: Cursor? = getApplication<Application>().contentResolver.query(
+            CurrentTimingContract.CONTENT_URI,
+            null,  // passing null for the projection returns all columns.
+            null,
+            null,
+            null)
+
+        if (timingCursor != null && timingCursor.moveToFirst()) {
+            // We have an un-timed record
+            val id = timingCursor.getLong(timingCursor.getColumnIndex(CurrentTimingContract.Columns.TIMING_ID))
+            val taskId = timingCursor.getLong(timingCursor.getColumnIndex(CurrentTimingContract.Columns.TASK_ID))
+            val startTime = timingCursor.getLong(timingCursor.getColumnIndex(CurrentTimingContract.Columns.START_TIME))
+            val name = timingCursor.getString(timingCursor.getColumnIndex(CurrentTimingContract.Columns.TASK_NAME))
+            timing = Timing(taskId, startTime, id)
+
+            // Update the LiveData
+            taskTiming.value = name
+
+        } else {
+            // No timing record found with zero duration
+            timing = null
+        }
+
+        timingCursor?.close()
+
+        Log.d(TAG, "retrieveTiming returning")
+        return timing
     }
 
     override fun onCleared() {
