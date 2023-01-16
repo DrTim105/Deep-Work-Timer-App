@@ -191,12 +191,14 @@ class DeepWorkViewModel(application: Application) : AndroidViewModel(application
             null)
 
         if (timingCursor != null && timingCursor.moveToFirst()) {
+
             // We have an un-timed record
-            val id = timingCursor.getLong(timingCursor.getColumnIndex(CurrentTimingContract.Columns.TIMING_ID))
-            val taskId = timingCursor.getLong(timingCursor.getColumnIndex(CurrentTimingContract.Columns.TASK_ID))
-            val startTime = timingCursor.getLong(timingCursor.getColumnIndex(CurrentTimingContract.Columns.START_TIME))
-            val name = timingCursor.getString(timingCursor.getColumnIndex(CurrentTimingContract.Columns.TASK_NAME))
+            val id = timingCursor.getLong(timingCursor.getColumnIndexOrThrow(CurrentTimingContract.Columns.TIMING_ID))
+            val taskId = timingCursor.getLong(timingCursor.getColumnIndexOrThrow(CurrentTimingContract.Columns.TASK_ID))
+            val startTime = timingCursor.getLong(timingCursor.getColumnIndexOrThrow(CurrentTimingContract.Columns.START_TIME))
+            val name = timingCursor.getString(timingCursor.getColumnIndexOrThrow(CurrentTimingContract.Columns.TASK_NAME))
             timing = Timing(taskId, startTime, id)
+
 
             // Update the LiveData
             taskTiming.value = name

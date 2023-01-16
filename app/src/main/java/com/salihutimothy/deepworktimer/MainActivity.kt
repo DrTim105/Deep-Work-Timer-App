@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.salihutimothy.deepworktimer.debug.TestData
 import com.salihutimothy.deepworktimer.dialogs.AppDialog
 import com.salihutimothy.deepworktimer.dialogs.SettingsDialog
 import com.salihutimothy.deepworktimer.entities.Task
@@ -116,6 +117,11 @@ class MainActivity : AppCompatActivity(), AddEditFragment.OnSaveClicked, TaskFra
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
+
+        if (BuildConfig.DEBUG) {
+            val generate = menu.findItem(R.id.menumain_generate)
+            generate.isVisible = true
+        }
         return true
     }
 
@@ -130,6 +136,7 @@ class MainActivity : AppCompatActivity(), AddEditFragment.OnSaveClicked, TaskFra
                 dialog.show(supportFragmentManager, null)
             }
             R.id.menumain_showAbout -> showAboutDialog()
+            R.id.menumain_generate -> TestData.generateTestData(contentResolver)
             android.R.id.home -> {
                 Log.d(TAG, "onOptionsItemSelected: home button pressed")
                 val fragment = findFragmentById(R.id.task_details_container)
